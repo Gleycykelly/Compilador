@@ -1,0 +1,3 @@
+123 se aux @ x 1
+{texto}
+fimse

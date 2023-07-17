@@ -1,0 +1,9 @@
+{
+    "python.analysis.extraPaths": [
+        "./Lexico"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "python.formatting.provider": "none"
+}
