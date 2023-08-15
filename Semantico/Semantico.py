@@ -6,17 +6,11 @@ variaveisTemporarias = []
 
 
 def invocar_semantico(token, pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos):
+    print(dadosParaArquivo)
     global x
     global variaveisTemporarias
     if(numeroDaRegra == 4):
         dadosParaArquivo.append('\n\n\n')      
-
-    elif(numeroDaRegra == 5):
-        #não sei o que fazer aqui. Acredito que não existe necessidade.
-        for item in pilha_semantica:
-            if(item["lexema"] == "TIPO"):
-                pilha_semantica[-1]["tipo"] = item["tipo"]
-                break
 
     elif(numeroDaRegra == 7):
         for tipo in pilha_semantica:
@@ -75,17 +69,35 @@ def invocar_semantico(token, pilha_semantica, numeroDaRegra, Tabela_Simbolos, at
             if(not temDeclaracao):
                 print("Erro: Varável não declarada. Linha XX, Coluna XX")
             temDeclaracao = False
+    
+    elif(numeroDaRegra == 18):
+        
+        for chave in Tabela_Simbolos.keys():
+            if(Tabela_Simbolos[chave]["lexema"] == atributos[0]["lexema"]):
+                if(atributos[0]["tipo"] == atributos[2]["tipo"]):
+                    primeiro = next(aux for aux in atributos if aux["classe"] == "id")["lexema"]
+                    segundo = next(aux for aux in atributos if aux["classe"] != "rcb" and aux["lexema"] != primeiro)["lexema"]
 
-    # elif(numeroDaRegra == 19):
-    #     for item in atributos:
-    #         if(item["tipo"] != "literal"):
-    #             print("teste")
-    #         elif(item["tipo"] != )
-    #         else:
-    #             print("Erro: Operadores com tipos incompatíveis. Linha XX, Coluna XX")
+                    dadosParaArquivo.append("{} = {}".format(primeiro, segundo))
 
-    elif(numeroDaRegra == 20):
-        print("teste")
+                else:
+                    print("Erro: Tipos diferentes para atribuição. Linha XX e Coluna XX")
+
+            else:
+                print("Erro: Variável não declarada. Linha XX e Coluna XX")
+
+    elif(numeroDaRegra == 19):
+        temporaria = {}
+        if(all(atributo["tipo"] != "literal" and (atributos[0]["tipo"] == atributo["tipo"] or atributo["classe"] == "opm") for atributo in atributos)):
+            nomeVariavel = "T{}".format(x)
+            x = x + 1
+            temporaria[nomeVariavel] = next(x for x in atributos if x["classe"] == "id")["lexema"] + next(x for x in atributos if x["classe"] == "opm")["lexema"] + next(x for x in atributos if x["classe"] == "num")["lexema"]
+            pilha_semantica[-1]["lexema"] = nomeVariavel
+            pilha_semantica[-1]["tipo"] = atributos[3]["tipo"]
+            dadosParaArquivo.append("{} = {}".format(nomeVariavel, temporaria[nomeVariavel]))
+            variaveisTemporarias.append(temporaria)
+        else:
+            print("Erro: Operadores com tipos incompatíveis. Linha XX, Coluna XX")
 
     elif(numeroDaRegra == 21):
         temDeclaracao = False

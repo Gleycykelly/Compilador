@@ -85,6 +85,15 @@ def parser():
                         elif(item["classe"] == "opm"):
                             atributos.append(item)
 
+                if(regra[0] == "CMD"):
+                    for item in pilha_semantica:
+                        if(item["classe"] == "id"):
+                            atributos.append(item)
+                        elif(item["classe"] == "rcb"):
+                            atributos.append(item)
+                        elif(item["classe"] == "LD"):
+                            atributos.append(item)
+
 
                 for _ in range(qtdaParaDesempilhar):
                     pilha.pop()
@@ -99,7 +108,7 @@ def parser():
 
                 invocar_semantico(a, pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos)
 
-                if(numeroDaRegra in (12, 13, 21, 22, 25, 26)):
+                if(numeroDaRegra in (12, 13, 18, 19, 21, 22, 25, 26)):
                     atributos = []
 
 
