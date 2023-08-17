@@ -5,10 +5,10 @@ x = 0
 variaveisTemporarias = []
 
 
-def invocar_semantico(token, pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos):
-    print(dadosParaArquivo)
+def invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos, linhas, colunas):
     global x
     global variaveisTemporarias
+
     if(numeroDaRegra == 4):
         dadosParaArquivo.append('\n\n\n')      
 
@@ -43,16 +43,18 @@ def invocar_semantico(token, pilha_semantica, numeroDaRegra, Tabela_Simbolos, at
                 break
     
     elif(numeroDaRegra == 12):
-        for chave in Tabela_Simbolos.keys():
-            if(Tabela_Simbolos[chave]["lexema"] == atributos[0]["lexema"]):
-                if(Tabela_Simbolos[chave]["tipo"] == "literal"):
-                    dadosParaArquivo.append("scanf('%s', {});".format(Tabela_Simbolos[chave]["lexema"]))
-                elif(Tabela_Simbolos[chave]["tipo"] == "inteiro"):
-                    dadosParaArquivo.append("scanf('%d', &{});".format(Tabela_Simbolos[chave]["lexema"]))
-                elif(Tabela_Simbolos[chave]["tipo"] == "real"):
-                    dadosParaArquivo.append("scanf('%lf', &{});".format(Tabela_Simbolos[chave]["lexema"]))
-                else:
-                    print("Erro: Variável não declarada. Linha XX e Coluna XX")
+        temDeclaracao = False
+        for simbolo in Tabela_Simbolos.values():
+            if(simbolo["lexema"] == atributos[0]["lexema"]):
+                temDeclaracao = True
+                if(simbolo["tipo"] == "literal"):
+                    dadosParaArquivo.append("scanf('%s', {});".format(simbolo["lexema"]))
+                elif(simbolo["tipo"] == "inteiro"):
+                    dadosParaArquivo.append("scanf('%d', &{});".format(simbolo["lexema"]))
+                elif(simbolo["tipo"] == "real"):
+                    dadosParaArquivo.append("scanf('%lf', &{});".format(simbolo["lexema"]))
+        if(not temDeclaracao):
+            print("Erro: Variável não declarada.  Linha {}, coluna {}".format(linhas, colunas))
             
 
 
@@ -63,17 +65,18 @@ def invocar_semantico(token, pilha_semantica, numeroDaRegra, Tabela_Simbolos, at
         temDeclaracao = False
 
         for item in atributos:
-            for chave in Tabela_Simbolos.keys():
-                if(Tabela_Simbolos[chave]["classe"] == "id" and Tabela_Simbolos[chave]["lexema"] == item["lexema"]):
+            for simbolo in Tabela_Simbolos.values():
+                if(simbolo["classe"] == "id" and simbolo["lexema"] == item["lexema"]):
                     temDeclaracao = True
             if(not temDeclaracao):
-                print("Erro: Varável não declarada. Linha XX, Coluna XX")
+                print("Erro: Varável não declarada. Linha {}, coluna {}".format(linhas, colunas))
             temDeclaracao = False
     
     elif(numeroDaRegra == 18):
-        
-        for chave in Tabela_Simbolos.keys():
-            if(Tabela_Simbolos[chave]["lexema"] == atributos[0]["lexema"]):
+        temDeclaracao = False
+        for simbolo in Tabela_Simbolos.values():
+            if(simbolo["lexema"] == atributos[0]["lexema"]):
+                temDeclaracao = True
                 if(atributos[0]["tipo"] == atributos[2]["tipo"]):
                     primeiro = next(aux for aux in atributos if aux["classe"] == "id")["lexema"]
                     segundo = next(aux for aux in atributos if aux["classe"] != "rcb" and aux["lexema"] != primeiro)["lexema"]
@@ -81,10 +84,10 @@ def invocar_semantico(token, pilha_semantica, numeroDaRegra, Tabela_Simbolos, at
                     dadosParaArquivo.append("{} = {}".format(primeiro, segundo))
 
                 else:
-                    print("Erro: Tipos diferentes para atribuição. Linha XX e Coluna XX")
+                    print("Erro: Tipos diferentes para atribuição.  Linha {}, coluna {}".format(linhas, colunas))
 
-            else:
-                print("Erro: Variável não declarada. Linha XX e Coluna XX")
+        if(not temDeclaracao):
+            print("Erro: Variável não declarada.   Linha {}, coluna {}".format(linhas, colunas))
 
     elif(numeroDaRegra == 19):
         temporaria = {}
@@ -97,19 +100,19 @@ def invocar_semantico(token, pilha_semantica, numeroDaRegra, Tabela_Simbolos, at
             dadosParaArquivo.append("{} = {}".format(nomeVariavel, temporaria[nomeVariavel]))
             variaveisTemporarias.append(temporaria)
         else:
-            print("Erro: Operadores com tipos incompatíveis. Linha XX, Coluna XX")
+            print("Erro: Operadores com tipos incompatíveis.   Linha {}, coluna {}".format(linhas, colunas))
 
     elif(numeroDaRegra == 21):
         temDeclaracao = False
         pilha_semantica[-1]["atributos"] = []
 
         for item in atributos:
-            for chave in Tabela_Simbolos.keys():
-                if(Tabela_Simbolos[chave]["classe"] == "id" and Tabela_Simbolos[chave]["lexema"] == item["lexema"]):
+            for simbolo in Tabela_Simbolos.values():
+                if(simbolo["classe"] == "id" and simbolo["lexema"] == item["lexema"]):
                     temDeclaracao = True
                     pilha_semantica[-1]["atributos"].append(item)
             if(not temDeclaracao):
-                print("Erro: Variável não declarada. Linha XX, Coluna XX")
+                print("Erro: Variável não declarada.   Linha {}, coluna {}".format(linhas, colunas))
             temDeclaracao = False
 
     elif(numeroDaRegra == 22):
@@ -134,4 +137,4 @@ def invocar_semantico(token, pilha_semantica, numeroDaRegra, Tabela_Simbolos, at
             variaveisTemporarias.append(temporaria)
             
         else:
-            print("Erro: Operandos com tipos incompatíveis. Linha XX e Coluna XX")
+            print("Erro: Operandos com tipos incompatíveis.   Linha {}, coluna {}".format(linhas, colunas))

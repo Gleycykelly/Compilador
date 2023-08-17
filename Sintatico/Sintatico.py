@@ -28,11 +28,13 @@ def parser():
     a = copy.deepcopy(scanner(arquivo))
 
     if(a is not None):
-
+        
         while(True):
+            
             s = pilha[-1]
             acaoAtual = action.at[s, a['classe']]
             if('s' == acaoAtual[0]):
+                linhas, colunas = linhasEColunas()
                 pilha.append(int(acaoAtual[1: len(acaoAtual)]))
                 pilha_semantica.append(a)
                 if(tokenAnterior is not None):
@@ -105,15 +107,13 @@ def parser():
                 pilha_semantica.append({"classe": regra[0], "lexema": regra[0], "tipo": None})
                 
                 print(producoes[numeroDaRegra])
-
-                invocar_semantico(a, pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos)
+                invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos, linhas, colunas)
 
                 if(numeroDaRegra in (12, 13, 18, 19, 21, 22, 25, 26)):
                     atributos = []
 
 
             elif ('acc' in acaoAtual):
-                print(Tabela_Simbolos)
                 break
             else:
                 tokenAnterior =  copy.deepcopy(a)
