@@ -7,10 +7,9 @@ void main(void)
 	int T2;
 	int T3;
 	int T4;
-	literal 	A
-	int 	B
-	D
-	double 	C
+	literal	A;
+	int	B,	D,	H;
+	double	C;
 	
 
 

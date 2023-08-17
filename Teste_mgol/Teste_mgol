@@ -1,7 +1,7 @@
 inicio
 varinicio
 literal A;
-inteiro B,D;
+inteiro B,D, H;
 real C ;
 varfim;
 escreva "Digite B";

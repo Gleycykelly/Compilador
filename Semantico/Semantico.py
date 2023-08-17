@@ -15,13 +15,26 @@ def invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos
 
     elif(numeroDaRegra == 7):
         jaExisteDeclaracao = True
+        ehVirgula = False
+        
         for tipo in pilha_semantica:
             if(tipo["lexema"] == "TIPO"):
                 for chave in Tabela_Simbolos.keys():
                     if(Tabela_Simbolos[chave]["classe"] == "id" and Tabela_Simbolos[chave]["tipo"] is None):
                         jaExisteDeclaracao = False
+                        encontrouNaPilha = False
                         Tabela_Simbolos[chave]["tipo"] = tipo["tipo"]
-                        dadosParaArquivo.append("{}\n".format(Tabela_Simbolos[chave]["lexema"]))
+                        
+                        for simbolo in pilha_semantica: 
+                            if(simbolo["classe"] == "vir"):
+                                ehVirgula = True
+                            if(simbolo["lexema"] == Tabela_Simbolos[chave]["lexema"] and Tabela_Simbolos[chave]["classe"] == "id"):
+                                encontrouNaPilha = True
+                        if(ehVirgula and encontrouNaPilha):
+                            dadosParaArquivo.append("{},".format(Tabela_Simbolos[chave]["lexema"]))
+                            ehVirgula = False
+                        else:
+                            dadosParaArquivo.append("{};\n".format(Tabela_Simbolos[chave]["lexema"]))
 
                 for item in pilha_semantica:
                     if(item["classe"] == "L"):
@@ -36,19 +49,19 @@ def invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos
         for chave in Tabela_Simbolos.keys():
             if("inteiro" in chave):
                 pilha_semantica[-1]["tipo"] = Tabela_Simbolos[chave]["tipo"]
-                dadosParaArquivo.append("int ")
+                dadosParaArquivo.append("int")
     
     elif(numeroDaRegra == 9):
         for chave in Tabela_Simbolos.keys():
             if("real" in chave):
                 pilha_semantica[-1]["tipo"] = Tabela_Simbolos[chave]["tipo"]
-                dadosParaArquivo.append("double ")
+                dadosParaArquivo.append("double")
     
     elif(numeroDaRegra == 10):
         for chave in Tabela_Simbolos.keys():
             if("literal" in chave):
                 pilha_semantica[-1]["tipo"] = Tabela_Simbolos[chave]["tipo"]
-                dadosParaArquivo.append("literal ")
+                dadosParaArquivo.append("literal")
                 break
     
     elif(numeroDaRegra == 12):
@@ -177,5 +190,5 @@ def gerarArquivo(possuiErroLexico, possuiErroSintatico):
                     identacao = "{}\t".format(identacao)
                 
     else:
-        print("Foram identificados erros na análise de código, impedindo a geração do arquivo.")
+        print("Foram identificados erros na análise do código, impedindo a geração do arquivo.")
     
