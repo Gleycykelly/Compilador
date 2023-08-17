@@ -163,10 +163,19 @@ def invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos
             pilha_semantica[-1]["lexema"] = nomeVariavel
             dadosParaArquivo.append("{} = {}; \n".format(nomeVariavel, temporaria[nomeVariavel]))
             variaveisTemporarias.append(temporaria)
-            
+ 
         else:
             possuiErroSemantico = True
             print("Erro: Operandos com tipos incompatíveis. Linha {}, coluna {}".format(linhas, colunas))
+    
+    elif(numeroDaRegra == 33):
+        dadosParaArquivo.append("while({}) {{\n".format(atributos[0]["lexema"]))
+
+    elif(numeroDaRegra == 37):
+        dadosParaArquivo.append("}\n")
+    
+    elif(numeroDaRegra == 38):
+        dadosParaArquivo.append("}\n")
 
 def gerarArquivo(possuiErroLexico, possuiErroSintatico):
 
@@ -184,7 +193,7 @@ def gerarArquivo(possuiErroLexico, possuiErroSintatico):
 
             for item in dadosParaArquivo:
                 if("}" in item):
-                    identacao = identacao.replace("\t\t", "\t")
+                    identacao = identacao.replace("\t", "", 1)
                 arquivo.write("{}{}".format(identacao, item))
                 if("{" in item):
                     identacao = "{}\t".format(identacao)

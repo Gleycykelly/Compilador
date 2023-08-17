@@ -7,13 +7,15 @@ void main(void)
 	int T2;
 	int T3;
 	int T4;
+	int T5;
+	int T6;
 	literal	A;
-	int	B,	D,	H;
+	int	B,	D,	E;
 	double	C;
 	
 
 
-	printf("Digite B");
+	printf("Digite B:");
 	scanf('%d', &B);
 	printf("Digite A:");
 	scanf('%s', A);
@@ -32,9 +34,16 @@ void main(void)
 	B = T4;
 	D = B;
 	C = 5.0;
+	T5 = B<5; 
+	while(T5) {
+		printf(C);
+		T6 = B+1;
+		B = T6;
+	}
 	printf("\nB=\n");
 	printf(D);
 	printf("\n");
 	printf(C);
 	printf("\n");
 	printf(A);
+}

@@ -36,7 +36,7 @@ def parser():
             s = pilha[-1]
             acaoAtual = action.at[s, a['classe']]
             if('s' == acaoAtual[0]):
-                linhas, colunas = linhasEColunas()
+                linhasSemantico, colunasSemantico = linhasEColunas()
                 pilha.append(int(acaoAtual[1: len(acaoAtual)]))
                 pilha_semantica.append(a)
                 if(tokenAnterior is not None):
@@ -81,6 +81,11 @@ def parser():
                         if(item["classe"] == "EXP_R"):
                                     atributos.append(item)
                 
+                if(regra[0] == "CABR"):
+                    for item in pilha_semantica:
+                        if(item["classe"] == "EXP_R"):
+                                    atributos.append(item)
+                
                 if(regra[0] == "LD"):
                     for item in pilha_semantica:
                         if(item["classe"] == "OPRD"):
@@ -109,9 +114,9 @@ def parser():
                 pilha_semantica.append({"classe": regra[0], "lexema": regra[0], "tipo": None})
                 
                 print(producoes[numeroDaRegra])
-                invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos, linhas, colunas)
+                invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos, linhasSemantico, colunasSemantico)
 
-                if(numeroDaRegra in (12, 13, 18, 19, 21, 22, 25, 26)):
+                if(numeroDaRegra in (12, 13, 18, 19, 21, 22, 25, 33, 26)):
                     atributos = []
 
 
