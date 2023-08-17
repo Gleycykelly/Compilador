@@ -5,7 +5,6 @@ x = 0
 variaveisTemporarias = []
 possuiErroSemantico = False
 
-
 def invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos, linhas, colunas):
     global x
     global variaveisTemporarias
@@ -44,7 +43,6 @@ def invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos
             possuiErroSemantico = True
             print("Erro: Variável já está declarada. Linha {}, coluna {}".format(linhas, colunas))
 
-
     elif(numeroDaRegra == 8):
         for chave in Tabela_Simbolos.keys():
             if("inteiro" in chave):
@@ -79,8 +77,6 @@ def invocar_semantico(pilha_semantica, numeroDaRegra, Tabela_Simbolos, atributos
             possuiErroSemantico = True
             print("Erro: Variável não declarada. Linha {}, coluna {}".format(linhas, colunas))
             
-
-
     elif(numeroDaRegra == 13):
         dadosParaArquivo.append("printf({});\n".format(atributos[0]["lexema"]))
     

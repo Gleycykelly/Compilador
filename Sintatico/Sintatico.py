@@ -35,17 +35,21 @@ def parser():
             
             s = pilha[-1]
             acaoAtual = action.at[s, a['classe']]
+
             if('s' == acaoAtual[0]):
                 linhasSemantico, colunasSemantico = linhasEColunas()
                 pilha.append(int(acaoAtual[1: len(acaoAtual)]))
                 pilha_semantica.append(a)
+
                 if(tokenAnterior is not None):
                     a = copy.deepcopy(tokenAnterior)
                     tokenAnterior = None
+                    
                 else:
                     a = copy.deepcopy(scanner(arquivo))
                     while (a is None) :
                         a = copy.deepcopy(scanner(arquivo))
+
             elif('r' == acaoAtual[0]):
                 numeroDaRegra = int(acaoAtual[1: len(acaoAtual)])
                 regra = producoes[numeroDaRegra].split('-> ')
@@ -63,7 +67,6 @@ def parser():
                         if(item["classe"] in ("id", "num")):
                             atributos.append(item)
                 
-
                 if(regra[0] == "ES"):
                     for item in pilha_semantica:
                         if(item["classe"] == "leia"):
@@ -103,7 +106,6 @@ def parser():
                         elif(item["classe"] == "LD"):
                             atributos.append(item)
 
-
                 for _ in range(qtdaParaDesempilhar):
                     pilha.pop()
                     pilha_semantica.pop()
@@ -119,10 +121,10 @@ def parser():
                 if(numeroDaRegra in (12, 13, 18, 19, 21, 22, 25, 33, 26)):
                     atributos = []
 
-
             elif ('acc' in acaoAtual):
                 gerarArquivo(possuiErroLexico, possuiErroSintatico)
                 break
+
             else:
                 tokenAnterior =  copy.deepcopy(a)
                 linhas, colunas = linhasEColunas()
