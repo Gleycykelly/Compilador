@@ -4,13 +4,14 @@ import sys
 sys.path.append('Lexico')
 sys.path.append('Semantico')
 
-from Lexico import scanner, linhasEColunas, Tabela_Simbolos
+from Lexico import scanner, linhasEColunas, Tabela_Simbolos, possuiErroLexico
 from Producao import producoes
-from Semantico import invocar_semantico, dadosParaArquivo
+from Semantico import invocar_semantico, gerarArquivo
 import copy
 
 linhas = 1
 colunas = 1
+possuiErroSintatico = False
 
 action = pd.read_csv('Sintatico\Actions.csv')
 goto = pd.read_csv('Sintatico\GoTo.csv')
@@ -24,6 +25,7 @@ def parser():
     pilha_semantica = []
     atributos = []
     s = pilha[-1]
+    global possuiErroSintatico
 
     a = copy.deepcopy(scanner(arquivo))
 
@@ -114,10 +116,12 @@ def parser():
 
 
             elif ('acc' in acaoAtual):
+                gerarArquivo(possuiErroLexico, possuiErroSintatico)
                 break
             else:
                 tokenAnterior =  copy.deepcopy(a)
                 linhas, colunas = linhasEColunas()
+                possuiErroSintatico = True
                 if('erroPT_V' == acaoAtual):
                     print("ERRO sintático – ; esperado antes de %s. Linha %s, coluna %d" % (a['lexema'], linhas, colunas - len(a['lexema'])))
                     a['classe'] = 'pt_v'

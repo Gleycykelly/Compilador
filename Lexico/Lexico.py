@@ -8,6 +8,7 @@ colunas = 1
 mensagemErro = None
 linhaErro = 0
 colunaErro = 0
+possuiErroLexico = False
 
 def buscaToken(lexema):
     for chave in Tabela_Simbolos.keys():
@@ -43,7 +44,7 @@ def criarTokenERRO(lexema):
         'lexema': lexema,
         'tipo'  : None,
     }
-
+    possuiErroLexico = True
     Tabela_Simbolos[lexema] = (novoToken)
     return novoToken
         
@@ -54,6 +55,7 @@ def scanner(arquivo):
     global mensagemErro
     global linhaErro
     global colunaErro
+    global possuiErroLexico
     lexema = ""
     estado = 0
     estadoAnterior = 0
@@ -155,27 +157,3 @@ def scanner(arquivo):
 
 def linhasEColunas():
     return linhas, colunas
-# def main():
-#     global tamanhoDoArquivo
-#     global mensagemErro
-#     global linhaErro
-#     global colunaErro
-
-#     arquivo = open('Teste_mgol\Teste_mgol', 'r').read()
-#     tamanhoDoArquivo = len(arquivo)
-
-#     while(posicaoArquivo < tamanhoDoArquivo):
-#         token = scanner(arquivo)
-#         if(token is not None):
-#             print("Classe: {} , Lexema: {}, Tipo: {}".format(token["classe"], token["lexema"], token["tipo"]))
-#             if(token['classe'] == "ERRO"):
-#                 print(mensagemErro)
-#                 mensagemErro = None
-#                 linhaErro = 0
-#                 colunaErro = 0
-
-#     token = scanner("eof")
-#     print("Classe: {} , Lexema: {}, Tipo: {}".format(token["classe"], token["lexema"], token["tipo"]))
-
-# if __name__ == '__main__':
-#     main()
